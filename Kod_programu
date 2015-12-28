@@ -23,7 +23,7 @@ char wybor[4][15] = {
 };
 int  adc_key_val[5] = { 30, 150, 360, 535, 760 };
 int NUM_KEYS = 5;
-int adc_key_in;
+int adc_in;
 int key=-1;
 int oldkey=-1;
 int poz=0;
@@ -35,18 +35,17 @@ void setup() {
 //lcd.printIn("Test LCD...");
 }
 void loop() {
-  adc_key_in = analogRead(0);    // read the value from the sensor   
-  key = get_key(adc_key_in);            // convert into key press
+  key = get_key();            // convert into key press
 
   if (key != oldkey)            // if keypress is detected
   {
-    delay(5);    // wait for debounce time
-    adc_key_in = analogRead(0);    // read the value from the sensor  
-    key = get_key(adc_key_in);            // convert into key press
+    delay(5);
+    key = get_key();            // convert into key press
     if (key != oldkey)
     {
       oldkey = key;
       if (key >=0) {
+        
         switch (key) {
           case 2:
           if(ekran==0){
@@ -106,12 +105,14 @@ void loop() {
   }
 }
 // Convert ADC value to key number
-int get_key(unsigned int input)
+int get_key(void)
 {
+  
   int k;
+   adc_in = analogRead(0);    // read the value from the sensor   
   for (k = 0; k < NUM_KEYS; k++)
   {
-    if (input < adc_key_val[k])
+    if (adc_in < adc_key_val[k])
       return k;
   }
 
